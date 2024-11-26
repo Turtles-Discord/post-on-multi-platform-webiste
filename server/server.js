@@ -43,7 +43,12 @@ app.use('/uploads', express.static('uploads'));
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/build')));
     
-    // The "catchall" handler: for any request that doesn't match one above, send back the React app.
+    // TikTok verification endpoint
+    app.get('/tiktokOCUO6obTbCQ2k1ms6dPL14G7IKASZ4xo.txt', (req, res) => {
+        res.type('text/plain');
+        res.send('OCUO6obTbCQ2k1ms6dPL14G7IKASZ4xo'); // Replace with your actual verification code
+    });
+
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
     });
