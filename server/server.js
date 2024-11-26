@@ -39,16 +39,13 @@ app.use('/api/auth', authRoutes);
 // Serve uploads
 app.use('/uploads', express.static('uploads'));
 
-// Add these routes before the catch-all route
-app.get('/tiktok-developers-site-verification-OCUO6obTbCQ2k1ms6dPL14G7IKASZ4xo', (req, res) => {
-    res.type('text/plain');
-    res.send('tiktok-developers-site-verification-OCUO6obTbCQ2k1ms6dPL14G7IKASZ4xo');
+// Serve static files
+app.get('/privacy.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/public/privacy.html'));
 });
 
-// For the second verification file
-app.get('/tiktok-developers-site-verification-[your_second_code]', (req, res) => {
-    res.type('text/plain');
-    res.send('tiktok-developers-site-verification-[your_second_code]');
+app.get('/terms.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/public/terms.html'));
 });
 
 // Make sure these routes are BEFORE the catch-all route
