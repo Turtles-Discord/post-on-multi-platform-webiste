@@ -47,8 +47,9 @@ const accountSchema = new mongoose.Schema({
 accountSchema.index({ platform: 1, accountNumber: 1 }, { unique: true });
 
 // Method to check if cookies are still valid
-accountSchema.methods.validateCookies = async function() {
+accountSchema.methods.validateCookies = async function() { 
   // Implementation depends on platform
+
   return true;
 };
 
