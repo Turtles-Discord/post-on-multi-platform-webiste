@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
+const morgan = require('morgan');
 require('dotenv').config();
 require('./config/database');
 const path = require('path');
@@ -8,6 +9,8 @@ const path = require('path');
 const app = express();
 
 // Middleware
+app.use(morgan(':date[iso] :remote-addr - :method :url :status :response-time ms - :user-agent'));
+
 app.use(cors({
     origin: process.env.NODE_ENV === 'production' 
         ? process.env.CLIENT_URL 
