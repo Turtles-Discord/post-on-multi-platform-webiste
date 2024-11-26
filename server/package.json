@@ -1,0 +1,24 @@
+{
+  "name": "social-media-poster-server",
+  "version": "1.0.0",
+  "description": "Server for social media multi-account poster",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "mongoose": "^6.13.4",
+    "multer": "^1.4.5-lts.1",
+    "proxy-checker": "^1.0.0",
+    "puppeteer": "^19.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}

@@ -1,0 +1,92 @@
+SOCIAL MEDIA MULTI-ACCOUNT POSTER
+================================
+
+A web application for automated posting to multiple TikTok and Instagram accounts.
+
+QUICK START
+-----------
+
+1. Clone & Install:
+   git clone https://github.com/yourusername/social-media-poster.git
+   cd social-media-poster
+
+   # Install server dependencies
+   cd server
+   npm install
+
+   # Install client dependencies
+   cd ../client
+   npm install
+
+2. Setup Environment:
+   
+   # In server/.env:
+   PORT=5000
+   MONGODB_URI=mongodb://localhost:27017/social-poster
+   SESSION_SECRET=your_secure_secret
+   CLIENT_URL=http://localhost:3000
+
+   # In client/.env:
+   REACT_APP_API_URL=http://localhost:5000/api
+
+3. Create Upload Directory:
+   cd server
+   mkdir uploads
+
+4. Start Application:
+   
+   # Terminal 1 - Start MongoDB
+   mongod
+
+   # Terminal 2 - Start Server
+   cd server
+   npm run dev
+
+   # Terminal 3 - Start Client
+   cd client
+   npm start
+
+   Visit http://localhost:3000 in your browser
+
+FEATURES
+--------
+- Multi-account management for TikTok and Instagram
+- Automated video posting
+- Proxy support for account protection
+- Bulk posting capabilities
+- Account status monitoring
+
+REQUIREMENTS
+-----------
+- Node.js v14+
+- MongoDB
+- Modern web browser
+- Internet connection
+
+TROUBLESHOOTING
+--------------
+1. Connection Issues:
+   - Verify MongoDB is running
+   - Check if ports 3000 and 5000 are available
+   - Ensure proper internet connectivity
+
+2. Upload Problems:
+   - Verify 'uploads' directory exists in server folder
+   - Check file size (max 100MB)
+   - Ensure video format is supported (MP4, MOV, AVI)
+
+3. Account Connection:
+   - Clear browser cookies if login popup fails
+   - Check proxy settings if configured
+   - Ensure account isn't already connected
+
+SECURITY NOTES
+-------------
+- Use strong SESSION_SECRET in production
+- Configure proper firewall rules
+- Regularly update dependencies
+- Monitor for suspicious activities
+- Backup database regularly
+
+For more information or support:
+github.com/yourusername/social-media-poster/issues 
