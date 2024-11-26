@@ -39,16 +39,22 @@ app.use('/api/auth', authRoutes);
 // Serve uploads
 app.use('/uploads', express.static('uploads'));
 
-// Serve static files from React app
+// Add these routes before the catch-all route
+app.get('/tiktok-developers-site-verification-OCUO6obTbCQ2k1ms6dPL14G7IKASZ4xo', (req, res) => {
+    res.type('text/plain');
+    res.send('tiktok-developers-site-verification-OCUO6obTbCQ2k1ms6dPL14G7IKASZ4xo');
+});
+
+// For the second verification file
+app.get('/tiktok-developers-site-verification-[your_second_code]', (req, res) => {
+    res.type('text/plain');
+    res.send('tiktok-developers-site-verification-[your_second_code]');
+});
+
+// Make sure these routes are BEFORE the catch-all route
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/build')));
     
-    // TikTok verification endpoint
-    app.get('/tiktokOCUO6obTbCQ2k1ms6dPL14G7IKASZ4xo.txt', (req, res) => {
-        res.type('text/plain');
-        res.send('OCUO6obTbCQ2k1ms6dPL14G7IKASZ4xo'); // Replace with your actual verification code
-    });
-
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
     });
