@@ -145,22 +145,19 @@ const AuthController = {
   async initiateTikTokAuth(req, res) {
     const { accountNumber } = req.query;
     
-    // Construct TikTok OAuth URL with proper encoding
-    const authUrl = new URL('https://www.tiktok.com/auth/authorize');
+    const authUrl = new URL(tiktokConfig.endpoints.auth);
     const params = {
-      client_key: process.env.TIKTOK_CLIENT_ID,
-      scope: 'user.info.basic,video.list,video.upload',
-      response_type: 'code',
-      redirect_uri: `${process.env.SERVER_URL}/api/auth/tiktok/callback`,
-      state: accountNumber
+        client_key: tiktokConfig.clientId,
+        response_type: 'code',
+        scope: tiktokConfig.scope,
+        redirect_uri: tiktokConfig.redirectUri,
+        state: accountNumber
     };
 
-    // Add parameters to URL
     Object.keys(params).forEach(key => 
-      authUrl.searchParams.append(key, params[key])
+        authUrl.searchParams.append(key, params[key])
     );
 
-    // Redirect to TikTok login
     res.redirect(authUrl.toString());
   },
 

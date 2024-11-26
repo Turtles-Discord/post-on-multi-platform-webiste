@@ -38,7 +38,22 @@ const accountSchema = new mongoose.Schema({
       default: Date.now
     },
     message: String
-  }]
+  }],
+  accessToken: {
+    type: String
+  },
+  refreshToken: {
+    type: String
+  },
+  tokenExpiry: {
+    type: Date
+  },
+  scope: {
+    type: String
+  },
+  userId: {
+    type: String
+  }
 }, {
   timestamps: true
 });
