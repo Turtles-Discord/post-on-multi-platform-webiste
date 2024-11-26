@@ -1,0 +1,16 @@
+{
+    "name": "social-media-poster",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+      "install-client": "cd client && npm install",
+      "install-server": "cd server && npm install",
+      "build-client": "cd client && npm run build",
+      "start-server": "cd server && npm start",
+      "render-build": "npm run install-client && npm run install-server && npm run build-client",
+      "render-start": "npm run start-server"
+    },
+    "engines": {
+      "node": ">=14.0.0"
+    }
+  }

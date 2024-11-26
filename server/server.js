@@ -3,12 +3,15 @@ const cors = require('cors');
 const session = require('express-session');
 require('dotenv').config();
 require('./config/database');
+const path = require('path');
 
 const app = express();
 
 // Middleware
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: process.env.NODE_ENV === 'production' 
+        ? process.env.CLIENT_URL 
+        : 'http://localhost:3000',
     credentials: true
 }));
 
@@ -32,6 +35,14 @@ app.use('/api/auth', authRoutes);
 
 // Add this line to serve static files
 app.use('/uploads', express.static('uploads'));
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/build')));
+    
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+    });
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {
