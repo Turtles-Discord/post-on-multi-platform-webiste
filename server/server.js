@@ -51,6 +51,32 @@ app.get('/terms.html', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/public/terms.html'));
 });
 
+
+
+
+
+
+
+
+
+// Serve TikTok verification file at /terms.html/tiktokFQuoYvwPHR7OuUaw2MOfyUJ0Ygt2jJZF.txt
+app.get('/terms.html/tiktokFQuoYvwPHR7OuUaw2MOfyUJ0Ygt2jJZF.txt', (req, res) => {
+    res.type('text/plain');
+    res.send('tiktok-developers-site-verification=FQuoYvwPHR7OuUaw2MOfyUJ0Ygt2jJZF');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Make sure these routes are BEFORE the catch-all route
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/build')));
