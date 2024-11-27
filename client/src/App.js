@@ -14,6 +14,15 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route 
+            path="/tiktokyflu9Pgu6ckp57uL2sQay0wxKQg3KePm.txt" 
+            element={
+              <pre style={{margin: 0}}>
+                tiktokyflu9Pgu6ckp57uL2sQay0wxKQg3KePm
+              </pre>
+            }
+            
+          />
         </Routes>
         <Footer />
         <ToastContainer 
