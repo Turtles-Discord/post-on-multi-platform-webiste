@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Dashboard from './pages/Dashboard';
+import TikTokVerification from './components/TikTokVerification';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
@@ -15,13 +16,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route 
-            path="/tiktokyflu9Pgu6ckp57uL2sQay0wxKQg3KePm.txt" 
-            element={
-              <pre style={{margin: 0}}>
-                tiktokyflu9Pgu6ckp57uL2sQay0wxKQg3KePm
-              </pre>
-            }
-            
+            path="/terms.html/tiktokFQuoYvwPHR7OuUaw2MOfyUJ0Ygt2jJZF" 
+            element={<TikTokVerification fileName="tiktokFQuoYvwPHR7OuUaw2MOfyUJ0Ygt2jJZF" />} 
+          />
+          <Route 
+            path="/privacy.html/tiktokp6bAaJLqM2vOHBaj4to8mtBiL71ZI6FM" 
+            element={<TikTokVerification fileName="tiktokp6bAaJLqM2vOHBaj4to8mtBiL71ZI6FM" />} 
           />
         </Routes>
         <Footer />
