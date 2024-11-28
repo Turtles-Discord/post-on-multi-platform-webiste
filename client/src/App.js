@@ -16,12 +16,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route 
-            path="/terms.html/tiktokFQuoYvwPHR7OuUaw2MOfyUJ0Ygt2jJZF" 
-            element={<TikTokVerification fileName="tiktokFQuoYvwPHR7OuUaw2MOfyUJ0Ygt2jJZF" />} 
+            path="/terms.html/tiktokFQuoYvwPHR7OuUaw2MOfyUJ0Ygt2jJZF.txt" 
+            element={<TikTokVerification fileName="tiktokFQuoYvwPHR7OuUaw2MOfyUJ0Ygt2jJZF.txt" />} 
           />
           <Route 
-            path="/privacy.html/tiktokp6bAaJLqM2vOHBaj4to8mtBiL71ZI6FM" 
-            element={<TikTokVerification fileName="tiktokp6bAaJLqM2vOHBaj4to8mtBiL71ZI6FM" />} 
+            path="/privacy.html/tiktokp6bAaJLqM2vOHBaj4to8mtBiL71ZI6FM.txt" 
+            element={<TikTokVerification fileName="tiktokp6bAaJLqM2vOHBaj4to8mtBiL71ZI6FM.txt" />} 
           />
         </Routes>
         <Footer />
