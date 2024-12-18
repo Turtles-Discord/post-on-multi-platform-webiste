@@ -144,40 +144,26 @@ const AuthController = {
   },
 
   async initiateTikTokAuth(req, res) {
-    const { accountNumber } = req.query;
-    
-    const authUrl = new URL('https://www.tiktok.com/login');
-    authUrl.searchParams.set('lang', 'en');
-    authUrl.searchParams.set('enter_method', 'web');
-    authUrl.searchParams.set('enter_from', `dev_${process.env.TIKTOK_CLIENT_ID}`);
-    
-    // Create the redirect URL with all necessary permissions
-    const redirectUrl = new URL('https://www.tiktok.com/v2/auth/authorize');
-    redirectUrl.searchParams.set('client_key', process.env.TIKTOK_CLIENT_ID);
-    redirectUrl.searchParams.set('state', accountNumber);
-    redirectUrl.searchParams.set('scope', [
-      'user.info.basic',
-      'user.info.username',
-      'user.info.stats',
-      'user.account.type',
-      'user.insights',
-      'video.list',
-      'video.insights',
-      'comment.list',
-      'comment.list.manage',
-      'video.publish',
-      'biz.brand.insights'
-    ].join(','));
-    redirectUrl.searchParams.set('response_type', 'code');
-    redirectUrl.searchParams.set('redirect_uri', process.env.TIKTOK_REDIRECT_URI);
-    
-    // Add the encoded redirect URL to the login URL
-    authUrl.searchParams.set('redirect_url', encodeURIComponent(redirectUrl.toString()));
-    authUrl.searchParams.set('hide_left_icon', '0');
-    authUrl.searchParams.set('type', '');
-    authUrl.searchParams.set('no_cta_popup', '1');
-    
-    res.redirect(authUrl.toString());
+    try {
+      const { accountNumber } = req.query;
+      if (!accountNumber) {
+        throw new Error('Account number is required');
+      }
+
+      // Build TikTok login URL
+      const loginUrl = new URL('https://www.tiktok.com/auth/authorize/');
+      loginUrl.searchParams.set('client_key', process.env.TIKTOK_CLIENT_ID);
+      loginUrl.searchParams.set('scope', 'user.info.basic,video.list,video.upload,video.publish');
+      loginUrl.searchParams.set('response_type', 'code');
+      loginUrl.searchParams.set('redirect_uri', process.env.TIKTOK_REDIRECT_URI);
+      loginUrl.searchParams.set('state', accountNumber);
+
+      console.log('Redirecting to:', loginUrl.toString()); // Debug log
+      res.redirect(loginUrl.toString());
+    } catch (error) {
+      console.error('Error initiating TikTok auth:', error);
+      res.status(500).json({ error: error.message });
+    }
   },
 
   async handleTikTokCallback(req, res) {

@@ -43,6 +43,10 @@ app.use('/api/tiktok', require('./routes/tiktok'));
 // Add this line after your other routes
 app.use('/api/accounts', require('./routes/accounts'));
 
+// Add this near your other route definitions
+const postRoutes = require('./routes/post');
+app.use('/api/post', postRoutes);
+
 // Serve uploads
 app.use('/uploads', express.static('uploads'));
 
