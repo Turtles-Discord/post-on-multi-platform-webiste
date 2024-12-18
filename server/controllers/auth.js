@@ -3,6 +3,7 @@ const Account = require('../models/Account');
 const ProxyManager = require('./proxy-manager');
 const { getNextProxy } = require('../config/proxy-list');
 const tiktokConfig = require('../config/tiktok');
+const axios = require('axios');
 
 const AuthController = {
   async initiateBrowser(platform, accountNumber) {
@@ -163,48 +164,63 @@ const AuthController = {
 
   async handleTikTokCallback(req, res) {
     const { code, state } = req.query;
-    const accountNumber = state;
+    const accountNumber = parseInt(state);
 
     try {
-      // Exchange code for access token
-      const tokenResponse = await fetch('https://open-api.tiktok.com/oauth/access_token/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          client_key: tiktokConfig.clientId,
-          client_secret: tiktokConfig.clientSecret,
-          code: code,
-          grant_type: 'authorization_code',
-          redirect_uri: tiktokConfig.redirectUri
-        })
+      // Check if account already exists
+      const existingAccount = await Account.findOne({
+        platform: 'tiktok',
+        accountNumber
       });
 
-      const tokenData = await tokenResponse.json();
+      if (existingAccount) {
+        throw new Error('Account number already connected');
+      }
 
-      if (!tokenData.access_token) {
+      // Exchange code for access token
+      const tokenResponse = await axios.post(tiktokConfig.endpoints.token, {
+        client_key: tiktokConfig.clientId,
+        client_secret: tiktokConfig.clientSecret,
+        code,
+        grant_type: 'authorization_code',
+        redirect_uri: tiktokConfig.redirectUri
+      });
+
+      const tokenData = tokenResponse.data;
+
+      if (!tokenData.data.access_token) {
         throw new Error('Failed to get access token');
       }
 
-      // Save the account info to database
-      await Account.create({
-        platform: 'tiktok',
-        accountNumber: parseInt(accountNumber),
-        accessToken: tokenData.access_token,
-        username: tokenData.open_id, // or get username from TikTok API
-        userId: tokenData.open_id
+      // Get user info from TikTok
+      const userResponse = await axios.get(tiktokConfig.endpoints.userInfo, {
+        headers: {
+          'Authorization': `Bearer ${tokenData.data.access_token}`
+        }
       });
 
-      // Send success message back to opener window
+      const username = userResponse.data.data.display_name;
+
+      // Save the account with both OAuth and cookie data
+      await Account.create({
+        platform: 'tiktok',
+        accountNumber,
+        accessToken: tokenData.data.access_token,
+        username,
+        userId: tokenData.data.open_id,
+        cookies: [], // Initialize empty cookies array
+        status: 'active',
+        lastLogin: new Date()
+      });
+
       res.send(`
         <script>
           window.opener.postMessage({
             type: 'AUTH_SUCCESS',
             platform: 'tiktok',
             accountNumber: ${accountNumber},
-            username: '${tokenData.open_id}'
-          }, '${process.env.CLIENT_URL}');
+            username: '${username}'
+          }, '*');
           window.close();
         </script>
       `);
@@ -213,10 +229,7 @@ const AuthController = {
       console.error('TikTok auth error:', error);
       res.status(500).send(`
         <script>
-          window.opener.postMessage({
-            type: 'AUTH_ERROR',
-            error: '${error.message}'
-          }, '${process.env.CLIENT_URL}');
+          alert('Authentication failed: ${error.message}');
           window.close();
         </script>
       `);

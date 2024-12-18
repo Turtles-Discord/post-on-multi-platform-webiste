@@ -5,6 +5,7 @@ const AuthController = require('../controllers/auth');
 // TikTok auth routes
 router.get('/tiktok', AuthController.initiateTikTokAuth);
 router.get('/tiktok/callback', AuthController.handleTikTokCallback);
+router.get('/tiktok/initiate', AuthController.initiateTikTokAuth);
 
 // Get accounts route
 router.get('/accounts', async (req, res) => {
