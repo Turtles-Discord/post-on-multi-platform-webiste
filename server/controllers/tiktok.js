@@ -87,6 +87,28 @@ class TikTokController {
             res.status(500).json({ error: 'Failed to publish video' });
         }
     }
+
+    async testVideoUpload(req, res) {
+        try {
+            const { accessToken } = req.user;
+            
+            // Test the token permissions
+            const response = await axios.get('https://open.api.tiktok.com/oauth/scopes/', {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            
+            if (response.data.scopes.includes('video.publish')) {
+                res.json({ success: true, message: 'Token has video upload permissions' });
+            } else {
+                res.json({ success: false, message: 'Token missing video upload permissions' });
+            }
+        } catch (error) {
+            console.error('Error testing token:', error);
+            res.status(500).json({ error: 'Failed to test token permissions' });
+        }
+    }
 }
 
 module.exports = new TikTokController(); 

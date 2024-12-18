@@ -19,5 +19,6 @@ const upload = multer({ storage });
 router.post('/upload/file', auth, upload.single('video'), TikTokController.uploadVideoByFile);
 router.post('/upload/url', auth, TikTokController.uploadVideoByUrl);
 router.post('/publish', auth, TikTokController.directPost);
+router.get('/test-permissions', auth, TikTokController.testVideoUpload);
 
 module.exports = router; 

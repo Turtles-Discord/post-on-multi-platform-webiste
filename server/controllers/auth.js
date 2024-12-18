@@ -146,19 +146,37 @@ const AuthController = {
   async initiateTikTokAuth(req, res) {
     const { accountNumber } = req.query;
     
-    const authUrl = new URL(tiktokConfig.endpoints.auth);
-    const params = {
-        client_key: tiktokConfig.clientId,
-        response_type: 'code',
-        scope: tiktokConfig.scope,
-        redirect_uri: tiktokConfig.redirectUri,
-        state: accountNumber
-    };
-
-    Object.keys(params).forEach(key => 
-        authUrl.searchParams.append(key, params[key])
-    );
-
+    const authUrl = new URL('https://www.tiktok.com/login');
+    authUrl.searchParams.set('lang', 'en');
+    authUrl.searchParams.set('enter_method', 'web');
+    authUrl.searchParams.set('enter_from', `dev_${process.env.TIKTOK_CLIENT_ID}`);
+    
+    // Create the redirect URL with all necessary permissions
+    const redirectUrl = new URL('https://www.tiktok.com/v2/auth/authorize');
+    redirectUrl.searchParams.set('client_key', process.env.TIKTOK_CLIENT_ID);
+    redirectUrl.searchParams.set('state', accountNumber);
+    redirectUrl.searchParams.set('scope', [
+      'user.info.basic',
+      'user.info.username',
+      'user.info.stats',
+      'user.account.type',
+      'user.insights',
+      'video.list',
+      'video.insights',
+      'comment.list',
+      'comment.list.manage',
+      'video.publish',
+      'biz.brand.insights'
+    ].join(','));
+    redirectUrl.searchParams.set('response_type', 'code');
+    redirectUrl.searchParams.set('redirect_uri', process.env.TIKTOK_REDIRECT_URI);
+    
+    // Add the encoded redirect URL to the login URL
+    authUrl.searchParams.set('redirect_url', encodeURIComponent(redirectUrl.toString()));
+    authUrl.searchParams.set('hide_left_icon', '0');
+    authUrl.searchParams.set('type', '');
+    authUrl.searchParams.set('no_cta_popup', '1');
+    
     res.redirect(authUrl.toString());
   },
 
