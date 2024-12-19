@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { signup } from '../../utils/api';
 import './Signup.css';
 
@@ -12,9 +12,13 @@ function Signup() {
     confirmPassword: ''
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
     try {
       if (formData.password !== formData.confirmPassword) {
         setError('Passwords do not match');
@@ -35,7 +39,10 @@ function Signup() {
         setError(data.message || 'Signup failed');
       }
     } catch (error) {
-      setError(error.message);
+      console.error('Signup error:', error);
+      setError(error.message || 'An error occurred during signup');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -53,6 +60,7 @@ function Signup() {
             onChange={(e) => setFormData({...formData, username: e.target.value})}
             required
             autoComplete="username"
+            disabled={isLoading}
           />
         </div>
         <div className="form-group">
@@ -64,6 +72,7 @@ function Signup() {
             onChange={(e) => setFormData({...formData, email: e.target.value})}
             required
             autoComplete="email"
+            disabled={isLoading}
           />
         </div>
         <div className="form-group">
@@ -75,6 +84,7 @@ function Signup() {
             onChange={(e) => setFormData({...formData, password: e.target.value})}
             required
             autoComplete="new-password"
+            disabled={isLoading}
           />
         </div>
         <div className="form-group">
@@ -86,9 +96,15 @@ function Signup() {
             onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
             required
             autoComplete="new-password"
+            disabled={isLoading}
           />
         </div>
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Signing up...' : 'Sign Up'}
+        </button>
+        <p className="auth-footer">
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
       </form>
     </div>
   );

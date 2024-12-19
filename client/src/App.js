@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -34,9 +34,19 @@ function App() {
               </PrivateRoute>
             } 
           />
-          <Route path="*" element={<Landing />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        <ToastContainer />
+        <ToastContainer 
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </div>
     </BrowserRouter>
   );
