@@ -6,6 +6,7 @@ import './Signup.css';
 function Signup() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    username: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -21,6 +22,7 @@ function Signup() {
       }
       
       const data = await signup({
+        username: formData.username,
         email: formData.email,
         password: formData.password
       });
@@ -42,6 +44,17 @@ function Signup() {
       <form onSubmit={handleSubmit} className="signup-form">
         <h2>Sign Up</h2>
         {error && <div className="error-message">{error}</div>}
+        <div className="form-group">
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={formData.username}
+            onChange={(e) => setFormData({...formData, username: e.target.value})}
+            required
+            autoComplete="username"
+          />
+        </div>
         <div className="form-group">
           <input
             type="email"

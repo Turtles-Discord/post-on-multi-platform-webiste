@@ -1,4 +1,6 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || '/api';
+const API_BASE_URL = process.env.NODE_ENV === 'development' 
+  ? 'http://localhost:5000/api'
+  : 'https://post-on-multi-platform-webiste.vercel.app/api';
 
 // Auth endpoints
 export const signup = async (userData) => {
@@ -9,6 +11,7 @@ export const signup = async (userData) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(userData),
+      credentials: 'include'
     });
     
     if (!response.ok) {
@@ -18,6 +21,7 @@ export const signup = async (userData) => {
     
     return await response.json();
   } catch (error) {
+    console.error('Signup error:', error);
     throw new Error(error.message || 'Signup failed');
   }
 };
