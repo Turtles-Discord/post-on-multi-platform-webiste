@@ -1,32 +1,6 @@
+
 {
-  "version": 2,
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "server/server.js"
-    },
-    {
-      "src": "^/static/(.*)",
-      "dest": "client/build/static/$1"
-    },
-    {
-      "src": "^/uploads/(.*)",
-      "dest": "/uploads/$1"
-    },
-    {
-      "src": "^/(login|signup|dashboard|settings)$",
-      "dest": "client/build/index.html"
-    },
-    {
-      "src": "^/(.*)\\.(?:json|ico|png|txt|html|js|css)$",
-      "dest": "client/build/$1.$2"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "client/build/index.html"
-    }
-  ],
-  "env": {
-    "UPLOAD_PATH": "uploads"
+    "rewrites": [
+      { "source": "/(.*)", "destination": "/" }
+    ]
   }
-} 
