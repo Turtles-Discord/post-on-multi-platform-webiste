@@ -15,13 +15,11 @@ app.use((req, res, next) => {
 // CORS configuration
 app.use(cors({
   origin: [
-    process.env.CLIENT_URL,
     'https://post-on-multi-platform-webiste.vercel.app',
     'http://localhost:3000'
   ],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 
 app.use(express.json());
