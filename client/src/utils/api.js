@@ -1,25 +1,37 @@
 const API_URL = process.env.REACT_APP_API_URL;
+const CLIENT_URL = process.env.REACT_APP_CLIENT_URL;
+
+
 
 // Auth endpoints
 export const signup = async (userData) => {
   try {
+    console.log('Attempting signup with URL:', `${API_URL}/auth/signup`);
+    
     const response = await fetch(`${API_URL}/auth/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
-      body: JSON.stringify(userData),
-      credentials: 'include'
+      body: JSON.stringify(userData)
     });
     
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Signup failed');
-    }
+    console.log('Response status:', response.status);
     
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('Error response:', errorData);
+      throw new Error(errorData || 'Signup failed');
+    }
+
     return await response.json();
   } catch (error) {
-    console.error('API Error:', error);
+    console.error('Detailed API Error:', {
+      message: error.message,
+      stack: error.stack,
+      url: `${API_URL}/auth/signup`
+    });
     throw error;
   }
 };
