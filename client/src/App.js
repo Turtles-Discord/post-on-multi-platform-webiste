@@ -1,41 +1,42 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import Login from './components/Login';
+import Signup from './components/Signup';
 import Dashboard from './pages/Dashboard';
-import TikTokVerification from './components/TikTokVerification';
+import PrivateRoute from './components/PrivateRoute';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+import Landing from './pages/Landing';
+import Analytics from './pages/Analytics';
 
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Navbar />
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route 
-            path="/terms.html/tiktokFQuoYvwPHR7OuUaw2MOfyUJ0Ygt2jJZF.txt" 
-            element={<TikTokVerification fileName="tiktokFQuoYvwPHR7OuUaw2MOfyUJ0Ygt2jJZF.txt" />} 
+            path="/dashboard" 
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            } 
           />
           <Route 
-            path="/privacy.html/tiktokp6bAaJLqM2vOHBaj4to8mtBiL71ZI6FM.txt" 
-            element={<TikTokVerification fileName="tiktokp6bAaJLqM2vOHBaj4to8mtBiL71ZI6FM.txt" />} 
+            path="/analytics" 
+            element={
+              <PrivateRoute>
+                <Analytics />
+              </PrivateRoute>
+            } 
           />
+          <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
-        <Footer />
-        <ToastContainer 
-          position="bottom-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
+        <ToastContainer />
       </div>
     </BrowserRouter>
   );

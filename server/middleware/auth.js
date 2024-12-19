@@ -3,22 +3,17 @@ const jwt = require('jsonwebtoken');
 
 // Middleware function to check for a valid token
 module.exports = (req, res, next) => {
-    // Get the token from the Authorization header
-    const token = req.headers['authorization'];
-
-    // If no token is provided, return a 403 Forbidden response
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    
     if (!token) {
-        return res.status(403).json({ success: false, message: 'No token provided.' });
+      return res.status(401).json({ message: 'Authentication required' });
     }
 
-    // Verify the token using the secret key
-    jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
-        // If token verification fails, return a 500 Internal Server Error response
-        if (err) {
-            return res.status(500).json({ success: false, message: 'Failed to authenticate token.' });
-        }
-        // If token is valid, save the decoded user information to the request object
-        req.user = decoded;
-        next(); // Proceed to the next middleware or route handler
-    });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = decoded.userId;
+    next();
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid or expired token' });
+  }
 };

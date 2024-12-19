@@ -1,8 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const AuthController = require('../controllers/auth');
+const AuthController = require('../controllers/authController');
 
-// TikTok auth routes
+// Authentication routes
+router.post('/signup', AuthController.signup);
+router.post('/login', AuthController.login);
+
+// Existing TikTok routes
 router.get('/tiktok', AuthController.initiateTikTokAuth);
 router.get('/tiktok/callback', AuthController.handleTikTokCallback);
 router.get('/tiktok/initiate', AuthController.initiateTikTokAuth);
