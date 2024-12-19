@@ -7,7 +7,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 // Auth endpoints
 export const signup = async (userData) => {
   try {
-    const response = await api.post('/api/auth/signup', userData);
+    const response = await api.post('/auth/signup', userData);
     return response.data;
   } catch (error) {
     console.error('Signup error:', error.response?.data || error.message);
@@ -17,7 +17,7 @@ export const signup = async (userData) => {
 
 export const login = async (credentials) => {
   try {
-    const response = await api.post('/api/auth/login', credentials);
+    const response = await api.post('/auth/login', credentials);
     return response.data;
   } catch (error) {
     console.error('Login error:', error.response?.data || error.message);
