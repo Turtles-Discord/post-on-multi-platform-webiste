@@ -15,10 +15,11 @@ function App() {
     <BrowserRouter>
       <div className="app">
         <Routes>
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route 
-            path="/dashboard" 
+            path="/dashboard/*" 
             element={
               <PrivateRoute>
                 <Dashboard />
@@ -33,7 +34,7 @@ function App() {
               </PrivateRoute>
             } 
           />
-          <Route path="/" element={<Landing />} />
+          <Route path="*" element={<Landing />} />
         </Routes>
         <ToastContainer />
       </div>

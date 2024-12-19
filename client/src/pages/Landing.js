@@ -1,8 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Landing.css';
 
 function Landing() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
+  React.useEffect(() => {
+    if (token) {
+      navigate('/dashboard');
+    }
+  }, [token, navigate]);
+
   return (
     <div className="landing">
       <nav className="landing-nav">
@@ -15,7 +24,7 @@ function Landing() {
 
       <header className="hero">
         <div className="hero-content">
-          <h1>Manage Multiple TikTok Accounts with Ease</h1>
+          <h1>Manage Multiple Social Media Accounts with Ease</h1>
           <p>Professional tools for content creators and social media managers</p>
           <Link to="/signup" className="cta-button">Get Started Free</Link>
         </div>
