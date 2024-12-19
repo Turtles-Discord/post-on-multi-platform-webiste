@@ -1,11 +1,9 @@
-const API_BASE_URL = process.env.NODE_ENV === 'development' 
-  ? 'http://localhost:5000/api'
-  : 'https://post-on-multi-platform-webiste.vercel.app/api';
+const API_URL = process.env.REACT_APP_API_URL;
 
 // Auth endpoints
 export const signup = async (userData) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+    const response = await fetch(`${API_URL}/auth/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -21,14 +19,14 @@ export const signup = async (userData) => {
     
     return await response.json();
   } catch (error) {
-    console.error('Signup error:', error);
-    throw new Error(error.message || 'Signup failed');
+    console.error('API Error:', error);
+    throw error;
   }
 };
 
 export const login = async (credentials) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -50,7 +48,7 @@ export const login = async (credentials) => {
 // Account endpoints
 export const connectPlatform = async (platform, accountNumber) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/accounts/connect/${platform}`, {
+    const response = await fetch(`${API_URL}/accounts/connect/${platform}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -72,7 +70,7 @@ export const connectPlatform = async (platform, accountNumber) => {
 
 export const getAccounts = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/accounts`, {
+    const response = await fetch(`${API_URL}/accounts`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
@@ -92,7 +90,7 @@ export const getAccounts = async () => {
 // Post endpoints
 export const createPost = async (formData) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/post`, {
+    const response = await fetch(`${API_URL}/post`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -113,7 +111,7 @@ export const createPost = async (formData) => {
 
 export const getPostHistory = async (page = 1, limit = 10) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/post/history?page=${page}&limit=${limit}`, {
+    const response = await fetch(`${API_URL}/post/history?page=${page}&limit=${limit}`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
