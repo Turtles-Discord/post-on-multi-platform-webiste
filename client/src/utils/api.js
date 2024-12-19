@@ -6,54 +6,21 @@ const API_URL = process.env.REACT_APP_API_URL;
 // Auth endpoints
 export const signup = async (userData) => {
   try {
-    console.log('Attempting signup with URL:', `${API_URL}/auth/signup`);
-    
-    const response = await fetch(`${API_URL}/auth/signup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(userData)
-    });
-    
-    console.log('Response status:', response.status);
-    
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.error('Error response:', errorData);
-      throw new Error(errorData || 'Signup failed');
-    }
-
-    return await response.json();
+    const response = await api.post('/api/auth/signup', userData);
+    return response.data;
   } catch (error) {
-    console.error('Detailed API Error:', {
-      message: error.message,
-      stack: error.stack,
-      url: `${API_URL}/auth/signup`
-    });
-    throw error;
+    console.error('Signup error:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Signup failed');
   }
 };
 
 export const login = async (credentials) => {
   try {
-    const response = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(credentials),
-    });
-    
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Login failed');
-    }
-    
-    return await response.json();
+    const response = await api.post('/api/auth/login', credentials);
+    return response.data;
   } catch (error) {
-    throw new Error(error.message || 'Login failed');
+    console.error('Login error:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Login failed');
   }
 };
 

@@ -1,15 +1,23 @@
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
+  baseURL: API_URL,
   timeout: 300000,
-  withCredentials: true
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
-    // You could add auth headers here if needed
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => {
@@ -26,15 +34,15 @@ api.interceptors.response.use(
       switch (error.response.status) {
         case 401:
           // Handle unauthorized
-          break;
-        case 403:
-          // Handle forbidden
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/login';
           break;
         case 404:
-          // Handle not found
+          console.error('API endpoint not found:', error.config.url);
           break;
         default:
-          // Handle other errors
+          console.error('API error:', error.response.data);
           break;
       }
     }

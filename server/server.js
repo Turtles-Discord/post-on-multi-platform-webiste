@@ -13,7 +13,10 @@ app.use((req, res, next) => {
 
 // CORS configuration
 app.use(cors({
-  origin: ['https://post-on-multi-platform-webiste.vercel.app', 'http://localhost:3000'],
+  origin: [
+    'http://localhost:3000',
+    'https://post-on-multi-platform-webiste.vercel.app'
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
