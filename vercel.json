@@ -1,15 +1,12 @@
 {
   "version": 2,
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
-  ],
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "server/server.js"
     },
     {
-      "src": "^/static/(.*)", 
+      "src": "^/static/(.*)",
       "dest": "client/build/static/$1"
     },
     {
@@ -17,19 +14,7 @@
       "dest": "/uploads/$1"
     },
     {
-      "src": "/login",
-      "dest": "client/build/index.html"
-    },
-    {
-      "src": "/signup",
-      "dest": "client/build/index.html"
-    },
-    {
-      "src": "/dashboard",
-      "dest": "client/build/index.html"
-    },
-    {
-      "src": "/settings",
+      "src": "^/(login|signup|dashboard|settings)$",
       "dest": "client/build/index.html"
     },
     {
