@@ -10,14 +10,17 @@
       }
     },
     {
-      "src": "server/api/index.js",
-      "use": "@vercel/node"
+      "src": "server/server.js",
+      "use": "@vercel/node",
+      "config": {
+        "buildCommand": "cd server && npm install"
+      }
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "server/api/index.js"
+      "dest": "server/server.js"
     },
     {
       "src": "/static/(.*)",
@@ -35,5 +38,10 @@
       "src": "/(.*)",
       "dest": "client/build/index.html"
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "MONGODB_URI": "@mongodb_uri",
+    "JWT_SECRET": "@jwt_secret"
+  }
 } 
