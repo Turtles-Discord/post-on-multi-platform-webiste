@@ -38,8 +38,12 @@ function Signup() {
         password: formData.password,
         username: formData.username
       });
-      localStorage.setItem('token', response.data.token);
-      navigate('/dashboard');
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        navigate('/dashboard');
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Signup failed');
     } finally {

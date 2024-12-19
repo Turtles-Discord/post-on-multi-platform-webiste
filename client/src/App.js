@@ -4,18 +4,17 @@ import { ToastContainer } from 'react-toastify';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Dashboard from './pages/Dashboard';
+import Settings from './pages/Settings';
+import Landing from './pages/Landing';
 import PrivateRoute from './components/PrivateRoute';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
-import Landing from './pages/Landing';
-import Analytics from './pages/Analytics';
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="app">
         <Routes>
-          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route 
@@ -27,14 +26,14 @@ function App() {
             } 
           />
           <Route 
-            path="/analytics" 
+            path="/settings" 
             element={
               <PrivateRoute>
-                <Analytics />
+                <Settings />
               </PrivateRoute>
             } 
           />
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Landing />} />
         </Routes>
         <ToastContainer />
       </div>
