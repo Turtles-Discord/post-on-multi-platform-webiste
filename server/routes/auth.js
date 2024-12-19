@@ -86,6 +86,8 @@ router.get('/tiktok/callback', async (req, res) => {
     const tokenData = await tokenResponse.json();
 
     if (tokenData.data && tokenData.data.access_token) {
+
+      
       // Save the token and account info to database
       // ... your database logic here ...
 
