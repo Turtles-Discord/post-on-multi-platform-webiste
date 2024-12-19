@@ -26,12 +26,6 @@
   margin-bottom: 1rem;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #666;
-}
-
 .form-group input {
   width: 100%;
   padding: 0.75rem;
@@ -66,13 +60,13 @@ button[type="submit"] {
   transition: background 0.3s ease;
 }
 
+button[type="submit"]:hover:not(:disabled) {
+  background: #1976d2;
+}
+
 button[type="submit"]:disabled {
   background: #90caf9;
   cursor: not-allowed;
-}
-
-button[type="submit"]:hover:not(:disabled) {
-  background: #1976d2;
 }
 
 .auth-footer {

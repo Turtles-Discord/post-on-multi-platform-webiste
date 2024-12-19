@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import Login from './components/Login';
-import Signup from './components/Signup';
+import Login from './components/Login/Login';
+import Signup from './components/Signup/Signup';
 import Dashboard from './pages/Dashboard';
 import Settings from './pages/Settings';
 import Landing from './pages/Landing';

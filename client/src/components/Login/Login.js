@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { login } from '../utils/api';
+import { Link, useNavigate } from 'react-router-dom';
+import { login } from '../../utils/api';
 import './Login.css';
 
 function Login() {
@@ -44,23 +44,25 @@ function Login() {
         {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email</label>
             <input
               type="email"
+              placeholder="Email"
               value={formData.email}
               onChange={(e) => setFormData({...formData, email: e.target.value})}
               required
               autoComplete="email"
+              disabled={isLoading}
             />
           </div>
           <div className="form-group">
-            <label>Password</label>
             <input
               type="password"
+              placeholder="Password"
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
               required
               autoComplete="current-password"
+              disabled={isLoading}
             />
           </div>
           <button type="submit" disabled={isLoading}>
@@ -68,7 +70,7 @@ function Login() {
           </button>
         </form>
         <p className="auth-footer">
-          Don't have an account? <a href="/signup">Sign up</a>
+          Don't have an account? <Link to="/signup">Sign up</Link>
         </p>
       </div>
     </div>
