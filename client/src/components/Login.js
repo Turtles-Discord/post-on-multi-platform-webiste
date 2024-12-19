@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import { login } from '../utils/api';
 import './Login.css';
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,15 +18,20 @@ function Login() {
     setError('');
 
     try {
-      const response = await api.post('/auth/login', { email, password });
-      if (response.ok) {
-        const data = await response.json();
+      const data = await login({
+        email: formData.email,
+        password: formData.password
+      });
+      
+      if (data.token) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         navigate('/dashboard');
+      } else {
+        setError(data.message || 'Login failed');
       }
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+    } catch (error) {
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -40,18 +47,20 @@ function Login() {
             <label>Email</label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
               required
+              autoComplete="email"
             />
           </div>
           <div className="form-group">
             <label>Password</label>
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={(e) => setFormData({...formData, password: e.target.value})}
               required
+              autoComplete="current-password"
             />
           </div>
           <button type="submit" disabled={isLoading}>
