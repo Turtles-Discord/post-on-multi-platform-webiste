@@ -1,6 +1,8 @@
 const API_URL = process.env.REACT_APP_API_URL;
 //const CLIENT_URL = process.env.REACT_APP_CLIENT_URL;
 
+import api from '../services/api';
+
 
 
 // Auth endpoints
