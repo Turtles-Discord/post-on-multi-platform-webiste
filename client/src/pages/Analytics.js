@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -37,13 +37,13 @@ function Analytics() {
     comments: []
   });
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, [timeframe, selectedAccount]);
-
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     try {
       setLoading(true);
+      const accountsResponse = await fetch('/api/accounts/tiktok');
+      const accountsData = await accountsResponse.json();
+      setAccounts(accountsData);
+
       const response = await fetch(`/api/analytics?timeframe=${timeframe}&account=${selectedAccount}`);
       const data = await response.json();
       setStats(data);
@@ -52,7 +52,11 @@ function Analytics() {
       console.error('Error fetching analytics:', error);
       setLoading(false);
     }
-  };
+  }, [timeframe, selectedAccount]);
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, [fetchAnalytics]);
 
   return (
     <div className="analytics-dashboard">
