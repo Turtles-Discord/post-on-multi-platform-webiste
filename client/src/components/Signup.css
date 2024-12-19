@@ -1,4 +1,4 @@
-.auth-container {
+.signup-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,7 +7,7 @@
   padding: 2rem;
 }
 
-.auth-card {
+.signup-form {
   background: white;
   padding: 2rem;
   border-radius: 8px;
@@ -16,7 +16,7 @@
   max-width: 400px;
 }
 
-.auth-card h2 {
+.signup-form h2 {
   text-align: center;
   color: #333;
   margin-bottom: 1.5rem;
@@ -24,12 +24,6 @@
 
 .form-group {
   margin-bottom: 1rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #666;
 }
 
 .form-group input {
@@ -66,12 +60,7 @@ button[type="submit"] {
   transition: background 0.3s ease;
 }
 
-button[type="submit"]:disabled {
-  background: #90caf9;
-  cursor: not-allowed;
-}
-
-button[type="submit"]:hover:not(:disabled) {
+button[type="submit"]:hover {
   background: #1976d2;
 }
 
