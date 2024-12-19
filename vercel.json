@@ -6,12 +6,28 @@
       "dest": "server/server.js"
     },
     {
-      "src": "^/static/(.*)",
+      "src": "^/static/(.*)", 
       "dest": "client/build/static/$1"
     },
     {
       "src": "^/uploads/(.*)",
       "dest": "/uploads/$1"
+    },
+    {
+      "src": "/login",
+      "dest": "client/build/index.html"
+    },
+    {
+      "src": "/signup",
+      "dest": "client/build/index.html"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "client/build/index.html"
+    },
+    {
+      "src": "/settings",
+      "dest": "client/build/index.html"
     },
     {
       "src": "^/(.*)\\.(?:json|ico|png|txt|html|js|css)$",
