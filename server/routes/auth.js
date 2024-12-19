@@ -58,7 +58,7 @@ router.get('/tiktok', async (req, res) => {
   const TIKTOK_CLIENT_ID = process.env.TIKTOK_CLIENT_ID;
   const REDIRECT_URI = process.env.NODE_ENV === 'development'
     ? `http://localhost:5000/api/auth/tiktok/callback`
-    : `https://post-on-multi-platform-webiste.vercel.app/api/auth/tiktok/callback`;
+    : `${process.env.API_URL}/auth/tiktok/callback`;
 
   const authUrl = `https://www.tiktok.com/auth/authorize?client_key=${TIKTOK_CLIENT_ID}&response_type=code&scope=user.info.basic,video.list,video.upload&redirect_uri=${REDIRECT_URI}&state=${accountNumber}`;
   
