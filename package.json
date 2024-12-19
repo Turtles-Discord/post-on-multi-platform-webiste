@@ -9,7 +9,7 @@
         "server": "cd server && npm run dev",
         "dev": "concurrently \"npm run server\" \"npm run client\"",
         "build": "cd client && npm run build",
-        "vercel-build": "cd client && npm install @babel/plugin-proposal-private-property-in-object --save && npm install && npm run build"
+        "vercel-build": "cd client && npm install && npm run build"
     },
     "devDependencies": {
         "concurrently": "^8.2.2"
