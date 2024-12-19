@@ -1,7 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js';
 import { Line, Bar } from 'react-chartjs-2';
-import { Chart as ChartJS } from 'chart.js/auto';
 import './Analytics.css';
+
+// Register ChartJS components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function Analytics() {
   const [timeframe, setTimeframe] = useState('week');
