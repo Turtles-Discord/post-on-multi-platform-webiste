@@ -1,9 +1,9 @@
-import { connectDB } from '../../config/database';
-import User from '../../models/User';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+const { connectDB } = require('../../config/database');
+const User = require('../../models/User');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -22,16 +22,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: 'Email or username already exists' });
     }
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Create user with hashed password
-    const user = new User({ 
-      email, 
-      password: hashedPassword, 
-      username 
-    });
+    // Create user (password hashing is handled by the model)
+    const user = new User({ email, password, username });
     await user.save();
 
     // Generate JWT token
