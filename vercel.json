@@ -1,46 +1,5 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "server/api/**/*.js",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "client/package.json",
-        "use": "@vercel/static-build",
-        "config": { "distDir": "build" }
-      }
-    ],
-    "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "server/api/$1.js"
-      },
-      {
-        "src": "^/static/(.*)",
-        "dest": "client/build/static/$1"
-      },
-      {
-        "src": "^/uploads/(.*)",
-        "dest": "/uploads/$1"
-      },
-      {
-        "src": "^/(login|signup|dashboard|settings)$",
-        "dest": "client/build/index.html"
-      },
-      {
-        "src": "^/(.*)\\.(?:json|ico|png|txt|html|js|css)$",
-        "dest": "client/build/$1.$2"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "client/build/index.html"
-      }
-    ],
     "rewrites": [
       { "source": "/(.*)", "destination": "/" }
-    ],
-    "env": {
-      "UPLOAD_PATH": "uploads"
-    }
+    ]
   }
