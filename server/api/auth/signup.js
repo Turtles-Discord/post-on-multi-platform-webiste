@@ -1,31 +1,37 @@
-const { connectDB } = require('../../config/database');
-const User = require('../../models/User');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import { connectDB } from '../../config/database';
+import User from '../../models/User';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
+  // Enable CORS
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  // Handle OPTIONS request
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
   try {
-    // Connect to DB and get status
+    console.log('Signup request received:', req.body);
     const dbConnection = await connectDB();
-    console.log('Database connection attempt:', dbConnection);
+    console.log('Database connection:', dbConnection);
 
-    if (dbConnection.status === 'error') {
-      return res.status(500).json({ 
-        message: 'Database connection failed', 
-        error: dbConnection.message 
-      });
-    }
-    
     const { email, password, username } = req.body;
     
-    // Log the request data (for debugging)
-    console.log('Signup request received:', { email, username });
-    
-    // Check if user exists
+    if (!email || !password || !username) {
+      return res.status(400).json({ 
+        message: 'Missing required fields' 
+      });
+    }
+
     const existingUser = await User.findOne({ 
       $or: [{ email }, { username }] 
     });
@@ -34,20 +40,24 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ message: 'Email or username already exists' });
     }
 
-    // Create user (password hashing is handled by the model)
-    const user = new User({ email, password, username });
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = new User({ 
+      email, 
+      password: hashedPassword, 
+      username 
+    });
     await user.save();
 
-    // Generate JWT token
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
 
-    res.status(201).json({
+    return res.status(201).json({
       message: 'User created successfully',
-      dbStatus: dbConnection.status,
       token,
       user: {
         id: user._id,
@@ -57,9 +67,6 @@ module.exports = async function handler(req, res) {
     });
   } catch (error) {
     console.error('Signup error:', error);
-    res.status(500).json({ 
-      message: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-    });
+    return res.status(500).json({ message: error.message });
   }
 } 
