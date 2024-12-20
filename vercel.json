@@ -1,5 +1,24 @@
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
-  ]
-}
+    "version": 2,
+    "builds": [
+      {
+        "src": "server/api/**/*.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/auth/signup",
+        "methods": ["POST", "OPTIONS"],
+        "dest": "server/api/auth/signup.js"
+      },
+      {
+        "src": "/api/auth/login",
+        "methods": ["POST", "OPTIONS"],
+        "dest": "server/api/auth/login.js"
+      }
+    ],
+    "rewrites": [
+      { "source": "/(.*)", "destination": "/" }
+    ]
+  }
