@@ -8,17 +8,34 @@
     ],
     "routes": [
       {
-        "src": "/api/auth/signup",
-        "methods": ["POST", "OPTIONS"],
-        "dest": "server/api/auth/signup.js"
+        "src": "/api/(.*)",
+        "dest": "server/server.js"
       },
       {
-        "src": "/api/auth/login",
-        "methods": ["POST", "OPTIONS"],
-        "dest": "server/api/auth/login.js"
+        "src": "^/static/(.*)",
+        "dest": "client/build/static/$1"
+      },
+      {
+        "src": "^/uploads/(.*)",
+        "dest": "/uploads/$1"
+      },
+      {
+        "src": "^/(login|signup|dashboard|settings)$",
+        "dest": "client/build/index.html"
+      },
+      {
+        "src": "^/(.*)\\.(?:json|ico|png|txt|html|js|css)$",
+        "dest": "client/build/$1.$2"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "client/build/index.html"
       }
     ],
     "rewrites": [
       { "source": "/(.*)", "destination": "/" }
-    ]
+    ],
+    "env": {
+      "UPLOAD_PATH": "uploads"
+    }
   }
