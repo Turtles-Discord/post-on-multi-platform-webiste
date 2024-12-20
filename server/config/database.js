@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     if (mongoose.connections[0].readyState) {
+      console.log('MongoDB already connected');
       return;
     }
 
@@ -13,9 +14,11 @@ const connectDB = async () => {
     });
     
     console.log('MongoDB connected successfully');
+    
+    return { status: 'connected', message: 'MongoDB connected successfully' };
   } catch (error) {
     console.error('MongoDB connection error:', error);
-    throw error;
+    return { status: 'error', message: error.message };
   }
 };
 

@@ -9,9 +9,21 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    await connectDB();
+    // Connect to DB and get status
+    const dbConnection = await connectDB();
+    console.log('Database connection attempt:', dbConnection);
+
+    if (dbConnection.status === 'error') {
+      return res.status(500).json({ 
+        message: 'Database connection failed', 
+        error: dbConnection.message 
+      });
+    }
     
     const { email, password, username } = req.body;
+    
+    // Log the request data (for debugging)
+    console.log('Signup request received:', { email, username });
     
     // Check if user exists
     const existingUser = await User.findOne({ 
@@ -35,6 +47,7 @@ module.exports = async function handler(req, res) {
 
     res.status(201).json({
       message: 'User created successfully',
+      dbStatus: dbConnection.status,
       token,
       user: {
         id: user._id,
@@ -44,6 +57,9 @@ module.exports = async function handler(req, res) {
     });
   } catch (error) {
     console.error('Signup error:', error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ 
+      message: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 } 

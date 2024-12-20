@@ -7,10 +7,17 @@ const API_URL = process.env.REACT_APP_API_URL;
 // Auth endpoints
 export const signup = async (userData) => {
   try {
+    console.log('Attempting signup with data:', userData);
     const response = await api.post('/auth/signup', userData);
+    console.log('Signup response:', response.data);
     return response.data;
   } catch (error) {
-    console.error('Signup error:', error.response?.data || error.message);
+    console.error('Detailed signup error:', {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+      headers: error.response?.headers
+    });
     throw new Error(error.response?.data?.message || 'Signup failed');
   }
 };
