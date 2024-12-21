@@ -11,43 +11,43 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 function App() {
+  const isAuthenticated = !!localStorage.getItem('token');
+
   return (
     <BrowserRouter>
-      <div className="app">
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route 
-            path="/dashboard/*" 
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            } 
-          />
-          <Route 
-            path="/settings" 
-            element={
-              <PrivateRoute>
-                <Settings />
-              </PrivateRoute>
-            } 
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-        <ToastContainer 
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route 
+          path="/dashboard/*" 
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          } 
         />
-      </div>
+        <Route 
+          path="/settings" 
+          element={
+            <PrivateRoute>
+              <Settings />
+            </PrivateRoute>
+          } 
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      <ToastContainer 
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </BrowserRouter>
   );
 }

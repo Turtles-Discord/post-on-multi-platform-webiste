@@ -1,8 +1,20 @@
 import api from '../services/api';
 const API_URL = process.env.REACT_APP_API_URL;
 
+const api = axios.create({
+  baseURL: process.env.NODE_ENV === 'development' 
+    ? 'http://localhost:5000/api'
+    : process.env.REACT_APP_API_URL
+});
 
-
+// Add request interceptor to include token
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 // Auth endpoints
 export const signup = async (userData) => {
@@ -25,7 +37,9 @@ export const signup = async (userData) => {
 
 export const login = async (credentials) => {
   try {
+    console.log('Attempting login with:', credentials);
     const response = await api.post('/auth/login', credentials);
+    console.log('Login response:', response.data);
     return response.data;
   } catch (error) {
     console.error('Login error:', error.response?.data || error.message);

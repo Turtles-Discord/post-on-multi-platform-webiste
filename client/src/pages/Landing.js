@@ -4,13 +4,6 @@ import './Landing.css';
 
 function Landing() {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
-
-  React.useEffect(() => {
-    if (token) {
-      navigate('/dashboard');
-    }
-  }, [token, navigate]);
 
   return (
     <div className="landing">

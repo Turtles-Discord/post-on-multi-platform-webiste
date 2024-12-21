@@ -4,6 +4,7 @@ import VideoUploader from '../components/VideoUploader';
 import { toast } from 'react-toastify';
 import api from '../services/api';
 import './Dashboard.css';
+import Navigation from '../components/Navigation/Navigation';
 
 function Dashboard() {
   const [videoFile, setVideoFile] = useState(null);
@@ -66,11 +67,12 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      <div className="dashboard-header">
-        <h1>Social Media Dashboard</h1>
-      </div>
-      
+      <Navigation />
       <div className="dashboard-content">
+        <div className="dashboard-header">
+          <h1>Social Media Dashboard</h1>
+        </div>
+        
         <div className="platform-sections">
           <PlatformSection 
             platform="tiktok"

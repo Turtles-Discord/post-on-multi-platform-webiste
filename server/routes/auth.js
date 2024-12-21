@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Account = require('../models/Account');
 
 router.post('/signup', async (req, res) => {
   try {
@@ -19,20 +20,15 @@ router.post('/signup', async (req, res) => {
       });
     }
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Create new user
+    // Create new user with plain password
     const user = new User({
       email,
-      password: hashedPassword,
+      password, // Store password directly
       username
     });
 
     await user.save();
 
-    // Create JWT token
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET,
@@ -113,6 +109,68 @@ router.get('/tiktok/callback', async (req, res) => {
         window.close();
       </script>
     `);
+  }
+});
+
+// Login route
+router.post('/login', async (req, res) => {
+  try {
+    console.log('Login request body:', req.body);
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      console.log('User not found:', email);
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    const isMatch = await user.comparePassword(password);
+    console.log('Password match:', isMatch);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    res.json({
+      message: 'Login successful',
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        username: user.username
+      }
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Add this route to get user's social media accounts
+router.get('/accounts', async (req, res) => {
+  try {
+    // Get token from header
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    // Find accounts for this user
+    const accounts = await Account.find({ userId: decoded.userId });
+    
+    res.json(accounts);
+  } catch (error) {
+    console.error('Error fetching accounts:', error);
+    res.status(500).json({ message: 'Error fetching accounts' });
   }
 });
 

@@ -27,12 +27,13 @@ function Login() {
       if (data.token) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        navigate('/dashboard');
+        navigate('/dashboard', { replace: true });
       } else {
         setError(data.message || 'Login failed');
       }
     } catch (error) {
-      setError(error.message);
+      console.error('Login error details:', error);
+      setError(error.message || 'An error occurred during login');
     } finally {
       setIsLoading(false);
     }

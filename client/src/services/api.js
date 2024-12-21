@@ -1,48 +1,36 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'https://post-on-multi-platform-webiste.vercel.app/api',
-  withCredentials: true,
+  baseURL: 'http://localhost:5000/api',
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  withCredentials: true
 });
 
-// Request interceptor
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+// Add request interceptor for debugging
+api.interceptors.request.use(request => {
+  console.log('API Request:', {
+    url: request.url,
+    method: request.method,
+    data: request.data,
+    headers: request.headers
+  });
+  return request;
+});
 
-// Response interceptor
+// Add response interceptor for debugging
 api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response) {
-      // Handle specific error cases
-      switch (error.response.status) {
-        case 401:
-          // Handle unauthorized
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          window.location.href = '/login';
-          break;
-        case 404:
-          console.error('API endpoint not found:', error.config.url);
-          break;
-        default:
-          console.error('API error:', error.response.data);
-          break;
-      }
-    }
+  response => {
+    console.log('API Response:', response.data);
+    return response;
+  },
+  error => {
+    console.error('API Error:', {
+      status: error.response?.status,
+      data: error.response?.data,
+      url: error.config?.url
+    });
     return Promise.reject(error);
   }
 );
